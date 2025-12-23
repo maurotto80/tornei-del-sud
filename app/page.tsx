@@ -4,7 +4,7 @@ import { sanityClient } from "@/sanity/config";
 import Header from "@/components/Header";
 import HomeHeroSlider from "@/components/HomeHeroSlider";
 import Footer from "@/components/Footer";
-import NewsletterForm from "@/components/NewsletterForm";
+import NewsletterFormCustom from "@/components/NewsletterFormCustom";
 import Link from "next/link";
 
 export default async function HomePage() {
@@ -161,7 +161,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <NewsletterForm />
+          <NewsletterFormCustom />
         </div>
       </section>
 

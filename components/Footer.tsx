@@ -2,9 +2,25 @@
 
 import { Facebook, Instagram, Youtube } from "lucide-react";
 
+// 🔒 SOCIAL FISSI (modificabili solo da codice)
+const SOCIAL_LINKS = {
+  facebook: "https://www.facebook.com/profile.php?id=100077440447476",
+  instagram: "https://www.instagram.com/torneidelsud",
+  youtube: "https://www.youtube.com/@torneidelsud",
+};
+
 export default function Footer() {
   return (
-    <footer className="bg-blue-200 text-white pt-16 pb-10">
+    <footer
+      className="
+        bg-gradient-to-b
+        from-blue-900
+        via-blue-700
+        to-blue-600
+        text-white
+        pt-16 pb-10
+      "
+    >
       {/* SEZIONE SUPERIORE */}
       <div
         className="
@@ -17,8 +33,8 @@ export default function Footer() {
         <div className="space-y-4 flex flex-col items-center md:items-start">
           <img
             src="/logo-footer.png"
-            alt="TorneiGiovanili.com"
-            className="w-32 mx-auto md:mx-0"
+            alt="TorneidelSud"
+            className="w-32"
           />
 
           <div className="pt-4">
@@ -45,7 +61,6 @@ export default function Footer() {
             </a>
           </p>
           <p>Tel: +39</p>
-          <p>Fax: +39</p>
           <p className="mt-2">P.IVA</p>
         </div>
 
@@ -55,7 +70,7 @@ export default function Footer() {
             Naviga
           </h3>
           <ul className="space-y-2">
-             <li><a href="/chi-siamo">Chi siamo</a></li>
+            <li><a href="/chi-siamo">Chi siamo</a></li>
             <li><a href="/tornei">Tornei</a></li>
             <li><a href="/galleria">Galleria</a></li>
             <li><a href="/news">News</a></li>
@@ -68,16 +83,37 @@ export default function Footer() {
           <h3 className="font-bold text-xl mb-4 uppercase text-blue-500">
             Follow Us
           </h3>
+
           <div className="flex gap-6 text-2xl">
-            <Facebook className="w-7 h-7" />
-            <Instagram className="w-7 h-7" />
-            <Youtube className="w-7 h-7" />
+            <a
+              href={SOCIAL_LINKS.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-orange-400 transition-transform hover:scale-110"
+            >
+              <Facebook className="w-7 h-7" />
+            </a>
+
+            <a
+              href={SOCIAL_LINKS.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-orange-400 transition-transform hover:scale-110"
+            >
+              <Instagram className="w-7 h-7" />
+            </a>
+
+            <a
+              href={SOCIAL_LINKS.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-orange-400 transition-transform hover:scale-110"
+            >
+              <Youtube className="w-7 h-7" />
+            </a>
           </div>
         </div>
       </div>
-
-      {/* LINEA */}
-      <div className="mt-12 border-t border-white/30"></div>
 
       {/* BOTTOM BAR */}
       <div className="w-full border-t border-white/10 mt-12 pt-6">
@@ -91,18 +127,18 @@ export default function Footer() {
           >
             {/* SINISTRA */}
             <div className="flex justify-center md:justify-start">
-  {/* MOBILE */}
-  <div className="text-center md:hidden leading-tight">
-    <div>© 2025 TorneidelSud.com</div>
-    <div>NIGRO EDITORE</div>
-    <div>P.IVA</div>
-  </div>
+              {/* MOBILE */}
+              <div className="text-center md:hidden leading-tight">
+                <div>© 2025 TorneidelSud.com</div>
+                <div>NIGRO EDITORE</div>
+                <div>P.IVA 00000000000</div>
+              </div>
 
-  {/* DESKTOP */}
-  <div className="hidden md:block">
-    © 2025 TorneidelSud.com | NIGRO EDITORE | P.IVA
-  </div>
-</div>
+              {/* DESKTOP */}
+              <div className="hidden md:block whitespace-nowrap">
+                © 2025 TorneidelSud.com | NIGRO EDITORE | P.IVA 00000000000
+              </div>
+            </div>
 
             {/* CENTRO */}
             <div className="flex justify-center gap-3">
@@ -115,46 +151,40 @@ export default function Footer() {
               </a>
             </div>
 
-            {/* DESTRA — FIX MOBILE */}
-            <div className="flex justify-center md:justify-end">
-              <div className="text-center md:text-right leading-tight">
-                <div>
-                  credits:&nbsp;
-                  <a
-                    href="https://www.maconservice.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold hover:text-orange-400"
-                  >
-                    Maconservice.com
-                  </a>
-                </div>
-
-                {/* 🔹 SOLO MOBILE VA A CAPO */}
-                <div className="block md:inline">
-                  Agency Web Division
-                </div>
-              </div>
+            {/* DESTRA */}
+            <div className="flex flex-col md:flex-row items-center justify-center md:justify-end text-center md:text-right">
+              <span className="flex items-center">
+                credits:&nbsp;
+                <a
+                  href="https://www.maconservice.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold hover:text-orange-400"
+                >
+                  Maconservice.com
+                </a>
+              </span>
+              <span className="block md:inline md:ml-1">
+                Agency Web Division
+              </span>
             </div>
-
           </div>
         </div>
       </div>
 
       {/* SCROLL TO TOP */}
       <button
-  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-  className="
-    fixed bottom-6 right-6
-    w-10 h-10
-    flex items-center justify-center
-    rounded-full bg-orange-500 text-white text-2xl
-    shadow-lg hover:bg-orange-600 transition
-  "
->
-  ↑
-</button>
-
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="
+          fixed bottom-6 right-6
+          w-10 h-10
+          flex items-center justify-center
+          rounded-full bg-orange-500 text-white text-2xl
+          shadow-lg hover:bg-orange-600 transition
+        "
+      >
+        ↑
+      </button>
     </footer>
   );
 }
