@@ -4,19 +4,26 @@ import WelcomeEmail from "@/emails/WelcomeEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendWelcomeEmail({
-  email,
-  name,
-}: {
-  email: string;
+type SendWelcomeEmailProps = {
+  to: string;
   name?: string;
-}) {
-  console.log("📨 INVIO EMAIL A:", email);
+  unsubscribeToken: string;
+};
+
+export async function sendWelcomeEmail({
+  to,
+  name,
+  unsubscribeToken,
+}: SendWelcomeEmailProps) {
+  console.log("📨 INVIO EMAIL A:", to);
 
   return resend.emails.send({
     from: process.env.NEWSLETTER_FROM!,
-    to: email,
+    to,
     subject: "Benvenuto nella newsletter Tornei del Sud",
-    react: React.createElement(WelcomeEmail, { name }),
+    react: React.createElement(WelcomeEmail, {
+      name,
+      unsubscribeToken,
+    }),
   });
 }
