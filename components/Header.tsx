@@ -89,13 +89,6 @@ export default function Header() {
               </li>
             </ul>
           </nav>
-
-          {/* CTA BOTTOM */}
-          <div className="px-6 py-6 border-t border-white/10">
-            <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-full font-semibold transition">
-              Richiedi catalogo
-            </button>
-          </div>
         </div>
       )}
     </>

@@ -4,19 +4,22 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 
+const BROCHURE_PDF_URL = "/BROCHURE_TORNEI_DEL_SUD_2026.pdf";
+
 export default async function TorneiPage() {
   const query = groq`
     *[_type == "torneo"] 
-      | order(anno desc, title asc){
-        title,
-        sottotitolo,
-        "slug": slug.current,
-        categorie,
-        anno,
-        heroImage{
-          asset->{ url }
-        }
-      }
+  | order(_createdAt asc){
+    title,
+    sottotitolo,
+    "slug": slug.current,
+    categorie,
+    anno,
+    heroImage{
+      asset->{ url }
+    }
+  }
+
   `;
 
   const tornei = await sanityClient.fetch(query);
@@ -31,9 +34,32 @@ export default async function TorneiPage() {
 
       {/* 🔻 CONTENUTO ESISTENTE — NON HO TOCCATO NULLA */}
       <div className="p-6 md:p-10 max-w-6xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold mb-8"></h1>
+  <h1 className="text-3xl md:text-4xl font-bold mb-6"></h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {/* 🔹 BOTTONI BROCHURE */}
+  <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+    
+    {/* 📥 Scarica */}
+    <a
+      href={BROCHURE_PDF_URL}
+      target="_blank"
+      className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-semibold text-center transition"
+    >
+      📥 Scarica Brochure
+    </a>
+
+    {/* 📖 Sfoglia */}
+    
+   <Link href="/brochure"   target="_blank"
+      className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-semibold text-center transition"
+    >
+  📖 Sfoglia Online
+</Link>
+
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
           {tornei.map((torneo: any) => (
             <Link
               key={torneo.slug}
