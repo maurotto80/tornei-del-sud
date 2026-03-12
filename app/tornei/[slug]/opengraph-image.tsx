@@ -11,7 +11,33 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default async function Image({ params }: any) {
+export default async function Image(
+  { params }: { params: { slug: string } }
+) {
+
+  const slug = params?.slug;
+
+  if (!slug) {
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            width: "1200px",
+            height: "630px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 60,
+            background: "#111",
+            color: "white",
+          }}
+        >
+          Tornei del Sud
+        </div>
+      ),
+      size
+    );
+  }
 
   const torneo = await sanityClient.fetch(
     groq`
@@ -21,9 +47,9 @@ export default async function Image({ params }: any) {
         heroImage{ asset->{ url } }
       }
     `,
-    { slug: params.slug }
+    { slug }
   );
-
+  if (!torneo) {
   return new ImageResponse(
     (
       <div
@@ -31,28 +57,57 @@ export default async function Image({ params }: any) {
           width: "1200px",
           height: "630px",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          backgroundImage: `url(${torneo.heroImage?.asset?.url})`,
-          backgroundSize: "cover",
-          color: "white",
-          padding: "60px",
+          alignItems: "center",
+          justifyContent: "center",
           fontSize: 60,
-          fontWeight: 700,
+          background: "#111",
+          color: "white",
         }}
       >
+        Tornei del Sud
+      </div>
+    ),
+    size
+  );
+}
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+  width: "1200px",
+  height: "630px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-end",
+  alignItems: "flex-start",
+  backgroundImage: `url(${torneo.heroImage?.asset?.url || "https://torneidelsud.it/default-og.jpg"})`,
+  backgroundSize: "cover",
+  color: "white",
+  padding: "60px",
+  fontSize: 60,
+  fontWeight: 700,
+}}
+      >
         <div
-          style={{
-            background: "rgba(0,0,0,0.5)",
-            padding: "30px",
-            borderRadius: "20px",
-          }}
-        >
-          {torneo.title}
-          <div style={{ fontSize: 32, marginTop: 10 }}>
-            Tornei del Sud
-          </div>
-        </div>
+  style={{
+    background: "rgba(0,0,0,0.5)",
+    padding: "30px",
+    borderRadius: "20px",
+  }}
+>
+  {torneo.title}
+
+  {torneo.sottotitolo && (
+    <div style={{ fontSize: 26, marginTop: 10 }}>
+      {torneo.sottotitolo}
+    </div>
+  )}
+
+  <div style={{ fontSize: 32, marginTop: 10 }}>
+    Tornei del Sud
+  </div>
+</div>
       </div>
     ),
     size
