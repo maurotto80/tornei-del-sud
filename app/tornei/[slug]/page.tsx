@@ -90,10 +90,10 @@ return {
 }
 
 export default async function TorneoPage(
-  props: { params?: { slug?: string } }
+  { params }: { params: { slug: string } }
 ) {
 
-  const slug = props?.params?.slug;
+  const slug = params.slug;
 
   if (!slug) {
     return (
