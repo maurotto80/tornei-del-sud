@@ -14,7 +14,11 @@ function formatDateIT(dateString: string) {
   return date.toLocaleDateString("it-IT");
 }
 
-export async function generateMetadata({ params }: any) {
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+) {
+
+  const slug = params.slug;
 
   const torneo = await sanityClient.fetch(
   `*[_type == "torneo" && slug.current == $slug][0]{
@@ -24,7 +28,7 @@ export async function generateMetadata({ params }: any) {
     dataFine,
     heroImage{ asset->{ url } }
   }`,
-  { slug: params.slug }
+  { slug }
 );
 
   const title = `${torneo.title} | Tornei del Sud`;
@@ -110,15 +114,15 @@ export default async function TorneoPage(
     }
   `;
 
-  const torneo = await sanityClient.fetch(query, { slug });
+ const torneo = await sanityClient.fetch(query, { slug });
 
-  if (!torneo) {
-    return (
-      <div className="p-10 text-center">
-        <h1 className="text-2xl font-bold">Torneo non trovato</h1>
-      </div>
-    );
-  }
+if (!torneo) {
+  return (
+    <div className="p-10 text-center">
+      <h1 className="text-2xl font-bold">Torneo non trovato</h1>
+    </div>
+  );
+}
 
   return (
     <div className="w-full">
