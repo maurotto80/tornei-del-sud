@@ -137,6 +137,7 @@ export default async function TorneoPage(
       }
     }
   `;
+  console.log("SLUG:", slug);
 
  const torneo = await sanityClient.fetch(query, { slug });
 
