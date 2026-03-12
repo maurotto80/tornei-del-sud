@@ -6,6 +6,31 @@ import PageHero from "@/components/PageHero";
 
 const BROCHURE_PDF_URL = "/BROCHURE_TORNEI_DEL_SUD_2026.pdf";
 
+export const metadata = {
+  title: "Tornei di Calcio Giovanile | Tornei del Sud",
+  description:
+    "Scopri tutti i tornei di calcio giovanile organizzati da Tornei del Sud. Eventi sportivi, competizioni e tornei per giovani calciatori.",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei`,
+  },
+  openGraph: {
+    title: "Tornei di Calcio Giovanile | Tornei del Sud",
+    description:
+      "Scopri tutti i tornei di calcio giovanile organizzati da Tornei del Sud.",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei`,
+    siteName: "Tornei del Sud",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/torneo-banner.png`,
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "it_IT",
+    type: "website",
+  },
+};
+
 export default async function TorneiPage() {
   const query = groq`
     *[_type == "torneo"] 
@@ -34,7 +59,9 @@ export default async function TorneiPage() {
 
       {/* 🔻 CONTENUTO ESISTENTE — NON HO TOCCATO NULLA */}
       <div className="p-6 md:p-10 max-w-6xl mx-auto">
-  <h1 className="text-3xl md:text-4xl font-bold mb-6"></h1>
+  <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+  Tornei di Calcio Giovanile
+</h1>
 
   {/* 🔹 BOTTONI BROCHURE */}
   <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
@@ -50,7 +77,7 @@ export default async function TorneiPage() {
 
     {/* 📖 Sfoglia */}
     
-   <Link href="/brochure"   target="_blank"
+   <Link href="/brochure" target="_blank" rel="noopener noreferrer"
       className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-semibold text-center transition"
     >
   📖 Sfoglia Online
@@ -72,7 +99,7 @@ export default async function TorneiPage() {
                   torneo.heroImage?.asset?.url ||
                   "https://via.placeholder.com/600x400?text=Torneo"
                 }
-                alt={torneo.title}
+                alt={`Torneo ${torneo.title} - Tornei del Sud`}
                 className="w-full h-48 object-cover rounded-lg mb-4"
               />
 

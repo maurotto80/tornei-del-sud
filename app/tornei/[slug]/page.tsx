@@ -5,6 +5,8 @@ import GalleryLightbox from "@/components/GalleryLightbox";
 import PageHero from "@/components/PageHero";
 import { PortableText } from "@portabletext/react";
 
+export const revalidate = 3600;
+
 /// 👉 FUNZIONE FORMATO DATA ITALIANA
 function formatDateIT(dateString: string) {
   if (!dateString) return "";
@@ -15,13 +17,15 @@ function formatDateIT(dateString: string) {
 export async function generateMetadata({ params }: any) {
 
   const torneo = await sanityClient.fetch(
-    `*[_type == "torneo" && slug.current == $slug][0]{
-      title,
-      sottotitolo,
-      heroImage{ asset->{ url } }
-    }`,
-    { slug: params.slug }
-  );
+  `*[_type == "torneo" && slug.current == $slug][0]{
+    title,
+    sottotitolo,
+    dataInizio,
+    dataFine,
+    heroImage{ asset->{ url } }
+  }`,
+  { slug: params.slug }
+);
 
   const title = `${torneo.title} | Tornei del Sud`;
 
@@ -46,12 +50,13 @@ return {
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${params.slug}`,
     siteName: "Tornei del Sud",
     images: [
-      {
-        url: image,
-        width: 1200,
-        height: 630,
-      },
-    ],
+  {
+    url: image,
+    width: 1200,
+    height: 630,
+    alt: torneo.title,
+  },
+],
     locale: "it_IT",
     type: "article",
   },
@@ -129,6 +134,7 @@ export default async function TorneoPage(
     __html: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "SportsEvent",
+sport: "Soccer",
       name: torneo.title,
       description: torneo.sottotitolo,
       startDate: torneo.dataInizio,
@@ -198,7 +204,7 @@ export default async function TorneoPage(
         </div>
 
         {/* DESCRIZIONE */}
-        <h1 className="text-3xl font-bold mb-6">{torneo.title}</h1>
+        <h2 className="text-3xl font-bold mb-6">{torneo.title}</h2>
 <div className="prose max-w-none mb-10">
   {torneo.descrizioneHtml ? (
     <div
