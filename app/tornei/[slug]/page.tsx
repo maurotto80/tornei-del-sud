@@ -12,10 +12,63 @@ function formatDateIT(dateString: string) {
   return date.toLocaleDateString("it-IT");
 }
 
+export async function generateMetadata({ params }: any) {
+
+  const torneo = await sanityClient.fetch(
+    `*[_type == "torneo" && slug.current == $slug][0]{
+      title,
+      sottotitolo,
+      heroImage{ asset->{ url } }
+    }`,
+    { slug: params.slug }
+  );
+
+  const title = `${torneo.title} | Tornei del Sud`;
+
+const description =
+  torneo.sottotitolo ||
+  `Scopri il torneo ${torneo.title} organizzato da Tornei del Sud`;
+
+const image =
+  torneo.heroImage?.asset?.url ||
+  `${process.env.NEXT_PUBLIC_SITE_URL}/default-og.jpg`;
+
+return {
+  title,
+  description,
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${params.slug}`,
+  },
+
+  openGraph: {
+    title,
+    description,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${params.slug}`,
+    siteName: "Tornei del Sud",
+    images: [
+      {
+        url: image,
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "it_IT",
+    type: "article",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [image],
+  },
+};
+}
+
 export default async function TorneoPage(
-  props: { params: Promise<{ slug: string }> }
+  props: { params: { slug: string } }
 ) {
-  const { slug } = await props.params;
+  const { slug } = props.params;
 
   const query = groq`
     *[_type == "torneo" && slug.current == $slug][0]{
@@ -70,6 +123,42 @@ export default async function TorneoPage(
         title={torneo.title}
          background={torneo.heroImage?.asset?.url}
       />
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      name: torneo.title,
+      description: torneo.sottotitolo,
+      startDate: torneo.dataInizio,
+      endDate: torneo.dataFine,
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode:
+        "https://schema.org/OfflineEventAttendanceMode",
+
+      location: {
+        "@type": "Place",
+        name: torneo.location?.title,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: torneo.location?.indirizzo,
+          addressLocality: torneo.location?.citta,
+          addressRegion: torneo.location?.regione,
+          addressCountry: "IT",
+        },
+      },
+
+      image: torneo.heroImage?.asset?.url,
+
+      organizer: {
+        "@type": "Organization",
+        name: "Tornei del Sud",
+        url: process.env.NEXT_PUBLIC_SITE_URL,
+      },
+    }),
+  }}
+/>
 
       {/* 🔻 CONTENUTO CENTRALE */}
       <div className="p-6 md:p-10 max-w-4xl mx-auto">
@@ -109,6 +198,7 @@ export default async function TorneoPage(
         </div>
 
         {/* DESCRIZIONE */}
+        <h1 className="text-3xl font-bold mb-6">{torneo.title}</h1>
 <div className="prose max-w-none mb-10">
   {torneo.descrizioneHtml ? (
     <div
