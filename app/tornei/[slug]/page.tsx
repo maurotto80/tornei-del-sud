@@ -15,21 +15,29 @@ function formatDateIT(dateString: string) {
 }
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } }
+  { params }: { params?: { slug?: string } }
 ) {
 
-  const slug = params.slug;
+  const slug = params?.slug;
+
+  // ⚠️ evita errore Sanity quando Next chiama metadata senza slug
+  if (!slug) {
+    return {
+      title: "Tornei del Sud",
+      description: "Tornei di calcio giovanile nel Sud Italia",
+    };
+  }
 
   const torneo = await sanityClient.fetch(
-  `*[_type == "torneo" && slug.current == $slug][0]{
-    title,
-    sottotitolo,
-    dataInizio,
-    dataFine,
-    heroImage{ asset->{ url } }
-  }`,
-  { slug }
-);
+    `*[_type == "torneo" && slug.current == $slug][0]{
+      title,
+      sottotitolo,
+      dataInizio,
+      dataFine,
+      heroImage{ asset->{ url } }
+    }`,
+    { slug }
+  );
 
   const title = `${torneo.title} | Tornei del Sud`;
 
