@@ -29,15 +29,22 @@ export async function generateMetadata(
   }
 
   const torneo = await sanityClient.fetch(
-    `*[_type == "torneo" && slug.current == $slug][0]{
-      title,
-      sottotitolo,
-      dataInizio,
-      dataFine,
-      heroImage{ asset->{ url } }
-    }`,
-    { slug }
-  );
+  `*[_type == "torneo" && slug.current == $slug][0]{
+    title,
+    sottotitolo,
+    dataInizio,
+    dataFine,
+    heroImage{ asset->{ url } }
+  }`,
+  { slug }
+);
+
+if (!torneo) {
+  return {
+    title: "Tornei del Sud",
+    description: "Tornei di calcio giovanile nel Sud Italia",
+  };
+}
 
   const title = `${torneo.title} | Tornei del Sud`;
 
@@ -53,13 +60,13 @@ return {
   title,
   description,
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${params.slug}`,
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${slug}`,
   },
 
   openGraph: {
     title,
     description,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${params.slug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/tornei/${slug}`,
     siteName: "Tornei del Sud",
     images: [
   {
@@ -83,9 +90,18 @@ return {
 }
 
 export default async function TorneoPage(
-  props: { params: { slug: string } }
+  props: { params?: { slug?: string } }
 ) {
-  const { slug } = props.params;
+
+  const slug = props?.params?.slug;
+
+  if (!slug) {
+    return (
+      <div className="p-10 text-center">
+        <h1 className="text-2xl font-bold">Torneo non trovato</h1>
+      </div>
+    );
+  }
 
   const query = groq`
     *[_type == "torneo" && slug.current == $slug][0]{
