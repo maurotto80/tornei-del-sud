@@ -15,13 +15,22 @@ export const metadata: Metadata = {
   ],
   metadataBase: new URL("https://www.torneidelsud.it"),
   openGraph: {
-    title: "Tornei del Sud",
-    description: "Organizzazione tornei di calcio giovanile nel Sud Italia",
-    type: "website",
-    locale: "it_IT",
-    url: "https://www.torneidelsud.it",
-    siteName: "Tornei del Sud",
-  },
+  title: "Tornei del Sud",
+  description: "Organizzazione tornei di calcio giovanile nel Sud Italia",
+  type: "website",
+  locale: "it_IT",
+  url: "https://www.torneidelsud.it",
+  siteName: "Tornei del Sud",
+
+  images: [
+    {
+      url: "/torneo-banner.png",
+      width: 1200,
+      height: 630,
+      alt: "Tornei del Sud",
+    },
+  ],
+},
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
