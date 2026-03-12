@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import NewsletterFormCustom from "@/components/NewsletterFormCustom";
 import Link from "next/link";
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   /* -------------------------------------------
      HERO SLIDER
@@ -41,7 +43,7 @@ export default async function HomePage() {
   ------------------------------------------- */
   const evidenzaQuery = groq`
     *[_type == "torneo" && isEvidenza == true] 
-      | order(anno desc){
+      | order(_createdAt asc){
         title,
         sottotitolo,
         "slug": slug.current,
@@ -79,7 +81,8 @@ export default async function HomePage() {
           TORNEI IN EVIDENZA
       ------------------------------------------- */}
       <section className="max-w-6xl mx-auto p-6 md:p-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
           {evidenza.map((torneo: any) => (
             <Link
               key={torneo.slug}

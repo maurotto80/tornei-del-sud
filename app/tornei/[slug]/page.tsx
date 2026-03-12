@@ -3,6 +3,7 @@ import { sanityClient } from "@/sanity/config";
 import Footer from "@/components/Footer";
 import GalleryLightbox from "@/components/GalleryLightbox";
 import PageHero from "@/components/PageHero";
+import { PortableText } from "@portabletext/react";
 
 /// 👉 FUNZIONE FORMATO DATA ITALIANA
 function formatDateIT(dateString: string) {
@@ -23,6 +24,7 @@ export default async function TorneoPage(
       "slug": slug.current,
       heroImage{ asset->{ url } },
       descrizione,
+      descrizioneHtml,
       categorie,
       anno,
       tipo,
@@ -107,11 +109,16 @@ export default async function TorneoPage(
         </div>
 
         {/* DESCRIZIONE */}
-        <div className="prose max-w-none mb-10">
-          {torneo.descrizione?.map((block: any, i: number) => (
-            <p key={i}>{block.children?.[0]?.text}</p>
-          ))}
-        </div>
+<div className="prose max-w-none mb-10">
+  {torneo.descrizioneHtml ? (
+    <div
+      dangerouslySetInnerHTML={{ __html: torneo.descrizioneHtml }}
+    />
+  ) : (
+    <PortableText value={torneo.descrizione} />
+  )}
+</div>
+
 
         {/* VIDEO */}
         {torneo.videoEmbed && (

@@ -46,62 +46,74 @@ function formatDateIT(dateString: string) {
           
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {albums.map((album: any) => (
-            <Link
-  key={album.slug}
-  href={`/galleria/${album.slug}`}
-  className="block bg-white rounded-xl shadow hover:shadow-lg transition"
->
-  {/* Copertina */}
-  <img
-    src={
-      album.immagini?.[0]?.asset?.url ||
-      "https://via.placeholder.com/600x400?text=Album"
-    }
-    alt={album.title}
-    className="w-full h-48 object-cover rounded-t-xl"
-  />
-
-  <div className="p-4">
-    
-
-    {/* Nome torneo */}
-    {album.torneo?.title && (
-      <p className="text-orange-600 font-semibold text-sm">
-        🏆 {album.torneo.title}
+       {albums.length === 0 ? (
+  // 🌙 Nessun album
+  <div className="text-center py-20">
+    <div className="inline-block bg-white rounded-xl shadow-lg px-8 py-10">
+      <p className="text-4xl mb-4">📷</p>
+      <h2 className="text-2xl font-bold mb-2">
+        La galleria è in aggiornamento
+      </h2>
+      <p className="text-gray-600 max-w-md">
+        Le foto dei nostri tornei verranno pubblicate a breve.<br />
+        Torna presto per scoprire tutti gli album fotografici degli eventi!
       </p>
-    )}
-
-    {/* Date torneo */}
-    {album.torneo?.dataInizio && (
-      <p className="text-gray-700 text-sm mt-1">
-        📅 {formatDateIT(album.torneo.dataInizio)}
-        {album.torneo.dataFine
-          ? ` → ${formatDateIT(album.torneo.dataFine)}`
-          : ""}
-      </p>
-    )}
-
-    {/* Location */}
-    {album.torneo?.location?.title && (
-      <p className="text-gray-700 text-sm flex items-center gap-1 mt-1">
-        📍 {album.torneo.location.title}
-        {album.torneo.location.citta ? `, ${album.torneo.location.citta}` : ""}
-      </p>
-    )}
-
-    {/* Descrizione breve */}
-    {album.descrizione && (
-      <p className="text-gray-600 text-sm mt-3 line-clamp-2">
-        {album.descrizione}
-      </p>
-    )}
+    </div>
   </div>
-</Link>
+) : (
+  // ✅ Griglia album
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {albums.map((album: any) => (
+      <Link
+        key={album.slug}
+        href={`/galleria/${album.slug}`}
+        className="block bg-white rounded-xl shadow hover:shadow-lg transition"
+      >
+        <img
+          src={
+            album.immagini?.[0]?.asset?.url ||
+            "https://via.placeholder.com/600x400?text=Album"
+          }
+          alt={album.title}
+          className="w-full h-48 object-cover rounded-t-xl"
+        />
 
-          ))}
+        <div className="p-4">
+          {album.torneo?.title && (
+            <p className="text-orange-600 font-semibold text-sm">
+              🏆 {album.torneo.title}
+            </p>
+          )}
+
+          {album.torneo?.dataInizio && (
+            <p className="text-gray-700 text-sm mt-1">
+              📅 {formatDateIT(album.torneo.dataInizio)}
+              {album.torneo.dataFine
+                ? ` → ${formatDateIT(album.torneo.dataFine)}`
+                : ""}
+            </p>
+          )}
+
+          {album.torneo?.location?.title && (
+            <p className="text-gray-700 text-sm mt-1">
+              📍 {album.torneo.location.title}
+              {album.torneo.location.citta
+                ? `, ${album.torneo.location.citta}`
+                : ""}
+            </p>
+          )}
+
+          {album.descrizione && (
+            <p className="text-gray-600 text-sm mt-3 line-clamp-2">
+              {album.descrizione}
+            </p>
+          )}
         </div>
+      </Link>
+    ))}
+  </div>
+)}
+
       </div>
 
       {/* FOOTER */}

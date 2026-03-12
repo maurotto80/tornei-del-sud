@@ -50,18 +50,21 @@ export default function Footer() {
           <h3 className="font-bold text-xl mb-4 uppercase text-blue-500">
             Contatti
           </h3>
-          <p>INDIRIZZO (Italia)</p>
+          <p>Nigro Editore<br />
+             Piazza Italia 9<br />
+             88814 Torre Melissa KR<br />
+             Italia</p>
           <p className="mt-3">
-            Email:{" "}
+            Email:{"info@torneidelsud.it "}
             <a
               href="mailto:info@test.com"
               className="underline hover:text-white/80"
             >
-              info@test.com
+              info@torneidelsud.it
             </a>
           </p>
           <p>Tel: +39</p>
-          <p className="mt-2">P.IVA</p>
+          <p className="mt-2">P.IVA : 03388490793</p>
         </div>
 
         {/* NAVIGA */}
@@ -131,12 +134,12 @@ export default function Footer() {
               <div className="text-center md:hidden leading-tight">
                 <div>© 2025 TorneidelSud.com</div>
                 <div>NIGRO EDITORE</div>
-                <div>P.IVA 00000000000</div>
+                <div>P.IVA 03388490793</div>
               </div>
 
               {/* DESKTOP */}
               <div className="hidden md:block whitespace-nowrap">
-                © 2025 TorneidelSud.com | NIGRO EDITORE | P.IVA 00000000000
+                © 2025 TorneidelSud.com | NIGRO EDITORE | P.IVA 03388490793
               </div>
             </div>
 

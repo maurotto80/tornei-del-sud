@@ -2,6 +2,7 @@ import groq from "groq";
 import { sanityClient } from "@/sanity/config";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
+import { PortableText } from "@portabletext/react";
 
 export default async function NewsArticlePage(
   props: { params: Promise<{ slug: string }> }
@@ -14,6 +15,7 @@ export default async function NewsArticlePage(
       excerpt,
       publishedAt,
       content,
+      contentHtml,
       cover{
         asset->{ url }
       }
@@ -44,22 +46,29 @@ export default async function NewsArticlePage(
           News del {new Date(article.publishedAt).toLocaleDateString("it-IT")}
         </p>
 
-        {/* IMMAGINE PICCOLA */}
-        {article.cover?.asset?.url && (
-          <div className="w-full flex justify-center mb-6">
-            <img
-              src={article.cover.asset.url}
-              alt={article.title}
-              className="w-48 h-48 object-cover rounded-lg shadow-md"
-            />
-          </div>
+        {/* IMMAGINE */}
+        {/* IMMAGINE GRANDE COME IN LISTA */}
+{/* IMMAGINE HERO NEWS */}
+{article.cover?.asset?.url && (
+  <img
+    src={article.cover.asset.url}
+    alt={article.title}
+    className="w-full h-[340px] md:h-[400px] object-cover rounded-xl shadow-lg mb-10"
+  />
         )}
 
         {/* CONTENUTO ARTICOLO */}
         <div className="prose prose-lg max-w-none">
-          {article.content?.map((block: any, i: number) => (
-            <p key={i}>{block.children?.[0]?.text}</p>
-          ))}
+
+          {/* 👉 Se esiste HTML avanzato */}
+          {article.contentHtml ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: article.contentHtml }}
+            />
+          ) : (
+            <PortableText value={article.content} />
+          )}
+
         </div>
 
         {/* TORNA ALLE NEWS */}

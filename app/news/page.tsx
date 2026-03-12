@@ -6,17 +6,33 @@ import Footer from "@/components/Footer";
 
 
 // ⭐ FUNZIONE ESTRATTO — mettila QUI
-function getExcerptFromContent(content: any[], words = 25) {
-  if (!content) return "";
+function getExcerpt(item: any, words = 25) {
+  // 1) Se esiste excerpt manuale → usa quello
+  if (item.excerpt) return item.excerpt;
 
-  const blocks = content
-    .filter((b: any) => b._type === "block")
-    .map((b: any) => b.children.map((c: any) => c.text).join(" "))
-    .join(" ");
+  // 2) Se esiste HTML avanzato → estrai testo da HTML
+  if (item.contentHtml) {
+    const plain = item.contentHtml.replace(/<[^>]+>/g, " ");
+    const excerpt = plain.split(" ").slice(0, words).join(" ");
+    return excerpt + "...";
+  }
 
-  const excerpt = blocks.split(" ").slice(0, words).join(" ");
-  return excerpt + "...";
+  // 3) Fallback Portable Text
+  if (item.content) {
+    const blocks = item.content
+      .filter((b: any) => b._type === "block")
+      .map((b: any) =>
+        b.children.map((c: any) => c.text).join(" ")
+      )
+      .join(" ");
+
+    const excerpt = blocks.split(" ").slice(0, words).join(" ");
+    return excerpt + "...";
+  }
+
+  return "";
 }
+
 
 
 // ⭐ COMPONENTE PAGINA — sotto la funzione
@@ -30,7 +46,8 @@ export default async function NewsPage() {
       cover{
         asset->{ url }
       },
-      content[]
+      content[],
+      contentHtml
     }
   `;
 
@@ -76,11 +93,9 @@ export default async function NewsPage() {
                   <h2 className="text-xl font-bold mb-2">{item.title}</h2>
 
                   {/* ESTRATTO */}
-                  <p className="text-gray-600 text-sm mb-3">
-                    {item.excerpt
-                      ? item.excerpt
-                      : getExcerptFromContent(item.content, 25)}
-                  </p>
+                 <p className="text-gray-600 text-sm mb-3">
+  {getExcerpt(item, 25)}
+</p>
 
                   <span className="text-blue-600 font-semibold text-sm hover:underline">
                     Leggi tutto →
