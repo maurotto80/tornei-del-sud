@@ -1,3 +1,5 @@
+//app/tornei/page.tsx
+
 import groq from "groq";
 import { sanityClient } from "@/sanity/config";
 import Link from "next/link";

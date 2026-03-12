@@ -1,3 +1,5 @@
+//app/tornei/[slug]/page.tsx
+
 import groq from "groq";
 import { sanityClient } from "@/sanity/config";
 import Footer from "@/components/Footer";
@@ -15,10 +17,10 @@ function formatDateIT(dateString: string) {
 }
 
 export async function generateMetadata(
-  { params }: { params?: { slug?: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
 
-  const slug = params?.slug;
+  const { slug } = await params;
 
   // ⚠️ evita errore Sanity quando Next chiama metadata senza slug
   if (!slug) {
@@ -90,10 +92,10 @@ return {
 }
 
 export default async function TorneoPage(
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
 
-  const slug = params.slug;
+  const { slug } = await params;
 
   if (!slug) {
     return (
