@@ -12,10 +12,7 @@ export default function ComingSoon() {
   className="mb-8"
 />
 
-      <h1 className="text-4xl md:text-6xl font-bold mb-6">
-        Tornei del Sud
-      </h1>
-
+     
       <p className="max-w-xl text-lg md:text-xl text-gray-300 mb-10">
         Stiamo preparando la nuova piattaforma dedicata ai tornei di calcio giovanile nel Sud Italia.
       </p>
