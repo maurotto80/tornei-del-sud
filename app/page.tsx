@@ -1,12 +1,16 @@
+import Image from "next/image";
+
 export default function ComingSoon() {
   return (
     <div className="fixed inset-0 bg-gray-900 text-white flex flex-col items-center justify-center text-center z-50 px-6">
 
-      <img
-        src="/logo.png"
-        alt="Tornei del Sud"
-        className="w-40 mb-8"
-      />
+      <Image
+  src="/logo.png"
+  alt="Tornei del Sud"
+  width={160}
+  height={160}
+  className="mb-8"
+/>
 
       <h1 className="text-4xl md:text-6xl font-bold mb-6">
         Tornei del Sud
